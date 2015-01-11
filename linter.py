@@ -9,6 +9,8 @@
 
 """This module exports the Erlc plugin class."""
 
+import tempfile
+import os
 from SublimeLinter.lint import Linter, util
 
 
@@ -43,7 +45,11 @@ class Erlc(Linter):
 
         this func is overridden so we can handle included directories.
         """
-        command = [self.executable_path, '-W']
+        tmpdir = os.path.join(tempfile.gettempdir(), 'SublimeLinter3')
+        command = [
+            self.executable_path, '-W',
+            '-o', tmpdir
+        ]
 
         settings = self.get_view_settings()
         dirs = settings.get('include_dirs', [])
